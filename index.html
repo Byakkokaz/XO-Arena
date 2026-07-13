@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XO Arena - Tic Tac Toe</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Global Audio settings & control panel (Persona 3 Reload style) -->
+    <div class="audio-control-container">
+        <button id="global-mute-btn" class="audio-toggle-btn" title="Pengaturan Suara">
+            <i class="fa-solid fa-volume-high"></i>
+        </button>
+        <div id="audio-settings-panel" class="audio-settings-panel hidden">
+            <div class="audio-panel-header">
+                <span>PENGATURAN AUDIO</span>
+            </div>
+            <div class="audio-control-row">
+                <label for="bgm-volume-slider"><i class="fa-solid fa-music"></i> BGM</label>
+                <input type="range" id="bgm-volume-slider" min="0" max="1" step="0.05" value="0.45">
+                <span id="bgm-vol-value">45%</span>
+            </div>
+            <div class="audio-control-row">
+                <label for="sfx-volume-slider"><i class="fa-solid fa-volume-low"></i> SFX</label>
+                <input type="range" id="sfx-volume-slider" min="0" max="1" step="0.05" value="0.5">
+                <span id="sfx-vol-value">50%</span>
+            </div>
+            <button id="mute-all-btn" class="mute-all-btn">
+                <i class="fa-solid fa-volume-xmark"></i> MUTE ALL
+            </button>
+        </div>
+    </div>
+
+    <!-- Floating Background Glass Shards (Persona 3 Reload style) -->
+    <div class="bg-shards">
+        <div class="shard s-1" style="top: 15%; left: 10%; --speed: 25s; --delay: 0s;"></div>
+        <div class="shard s-2" style="top: 25%; right: 12%; --speed: 20s; --delay: -5s;"></div>
+        <div class="shard s-3" style="bottom: 20%; left: 15%; --speed: 30s; --delay: -2s;"></div>
+        <div class="shard s-4" style="bottom: 12%; right: 8%; --speed: 22s; --delay: -8s;"></div>
+        <div class="shard s-5" style="top: 50%; right: 25%; --speed: 28s; --delay: -12s;"></div>
+        <div class="shard s-6" style="top: 70%; left: 30%; --speed: 18s; --delay: -4s;"></div>
+    </div>
+
+    <!-- Halaman Home -->
+    <div id="home-screen" class="screen-container">
+        <div class="home-logo-area">
+            <div class="logo-grid-graphic">
+                <div class="line v-line-1"></div>
+                <div class="line v-line-2"></div>
+                <div class="line h-line-1"></div>
+                <div class="line h-line-2"></div>
+                <span class="grid-icon gi-x-1">✖</span>
+                <span class="grid-icon gi-o-1">⭕</span>
+                <span class="grid-icon gi-x-2">✖</span>
+                <span class="grid-icon gi-o-2">⭕</span>
+            </div>
+            <h1 class="logo-title">TIC <span class="cyan-text">TAC</span> <span class="pink-text">TOE</span></h1>
+            <p class="logo-subtitle">Game klasik untuk menguji strategi dan kecerdasanmu!</p>
+        </div>
+
+        <div class="home-actions">
+            <button id="playBtn" class="primary-btn">
+                <i class="fa-solid fa-play"></i> MULAI BERMAIN
+            </button>
+            <div class="home-sub-buttons">
+                <button id="scoreboardBtn" class="secondary-btn">
+                    <i class="fa-solid fa-trophy"></i> PAPAN SKOR
+                </button>
+                <button id="rulesBtn" class="secondary-btn">
+                    <i class="fa-solid fa-book-open"></i> PERATURAN
+                </button>
+            </div>
+        </div>
+        <div class="footer-credit">
+            © 2026 XO Arena Game
+        </div>
+    </div>
+
+    <!-- Halaman Rules (Peraturan) -->
+    <div id="rules-screen" class="screen-container hidden">
+        <div class="panel-header">
+            <button id="rulesBackBtn" class="icon-btn"><i class="fa-solid fa-arrow-left"></i></button>
+            <h2>PERATURAN</h2>
+            <div style="width: 40px;"></div> <!-- Spacer for balance -->
+        </div>
+
+        <div class="rules-content-box">
+            <div class="rule-section">
+                <div class="rule-icon-title">
+                    <i class="fa-solid fa-star cyan-text"></i>
+                    <h3>Mode Klasik</h3>
+                </div>
+                <p>Main bergantian antara X dan O (atau vs AI). Pemain pertama yang sukses membuat 3 simbol sejajar (mendatar, tegak, atau diagonal) memenangkan game.</p>
+            </div>
+            
+            <div class="rule-section">
+                <div class="rule-icon-title">
+                    <i class="fa-solid fa-circle-exclamation pink-text"></i>
+                    <h3>Mode Battle (Nyawa)</h3>
+                </div>
+                <p>Masing-masing pemain dibekali 3 Nyawa (<span class="pink-text">❤️❤️❤️</span>). Pemenang ronde mengurangi 1 Nyawa lawan. Ronde seri tidak mengurangi nyawa. Sisa nyawa akan terbawa ke ronde berikutnya sampai salah satu kehabisan nyawa!</p>
+            </div>
+
+            <div class="rule-section">
+                <div class="rule-icon-title">
+                    <i class="fa-solid fa-robot yellow-text"></i>
+                    <h3>Tantangan AI</h3>
+                </div>
+                <p>Tingkat kesulitan AI dapat disesuaikan (Mudah, Sedang, Sulit). Di mode Battle vs AI, tingkat kesulitan AI akan otomatis meningkat seiring berkurangnya sisa nyawa AI!</p>
+            </div>
+
+            <div class="rule-section">
+                <div class="rule-icon-title">
+                    <i class="fa-solid fa-wand-magic-sparkles yellow-text"></i>
+                    <h3>Mode Ultimate (Skill)</h3>
+                </div>
+                <p>Pilih ukuran papan besar (5×5 atau 7×7). Setiap giliran baru, pemain menerima 1 skill acak ke inventory (Maks 5). Gunakan kombinasi skill (seperti Bomb, Shield, Wall, Lock Cell, Swap, dll.) di giliran Anda untuk membalikkan keadaan. Pemain harus memenuhi 5 simbol sejajar (untuk papan 5x5) atau 7 simbol sejajar (untuk papan 7x7) untuk menang.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Halaman Play (Pilihan Mode, Lawan & Kesulitan) -->
+    <div id="play-screen" class="screen-container hidden">
+        <!-- Top Lobby Navigation Bar -->
+        <div class="lobby-header">
+            <button id="modeBackBtn" class="icon-btn"><i class="fa-solid fa-arrow-left"></i></button>
+            <div class="lobby-tabs">
+                <button type="button" class="lobby-tab-btn active" data-mode="classic">KLASIK</button>
+                <button type="button" class="lobby-tab-btn" data-mode="battle">BATTLE</button>
+                <button type="button" class="lobby-tab-btn" data-mode="ultimate">ULTIMATE</button>
+            </div>
+            <div style="width: 44px;"></div> <!-- Spacer for symmetry -->
+        </div>
+
+        <p class="panel-subtitle">Pilih mode permainan dan lawan yang kamu suka</p>
+
+        <!-- Large Cards Row/Grid -->
+        <div class="lobby-cards-container">
+            <!-- Card 1: PvP -->
+            <div class="lobby-card active" data-opponent="pvp">
+                <div class="lobby-card-banner banner-pvp">
+                    <i class="fa-solid fa-user-group lobby-banner-icon"></i>
+                </div>
+                <div class="lobby-card-body">
+                    <div class="lobby-card-meta">
+                        <i class="fa-solid fa-user cyan-text"></i>
+                        <h3>Pemain vs Pemain</h3>
+                    </div>
+                    <p class="lobby-card-desc">Bermain berdua secara offline di satu perangkat secara bergantian.</p>
+                    <div class="lobby-card-extra">
+                        <span class="badge-rules">ATURAN KLASIK</span>
+                    </div>
+                </div>
+                <div class="lobby-card-footer" id="playPvpBtn">
+                    <span class="play-label">PLAY</span>
+                    <i class="fa-solid fa-chevron-right play-arrow"></i>
+                </div>
+            </div>
+
+            <!-- Card 2: PvAI -->
+            <div class="lobby-card" data-opponent="ai">
+                <div class="lobby-card-banner banner-ai">
+                    <i class="fa-solid fa-robot lobby-banner-icon"></i>
+                </div>
+                <div class="lobby-card-body">
+                    <div class="lobby-card-meta">
+                        <i class="fa-solid fa-robot pink-text"></i>
+                        <h3>Pemain vs Komputer</h3>
+                    </div>
+                    <p class="lobby-card-desc">Tantang kecerdasan AI minimax dengan tingkat kesulitan adaptif.</p>
+                    <div class="lobby-card-extra">
+                        <!-- Difficulty Selection wrapper (referenced in JS) -->
+                        <div id="difficulty-section" class="lobby-difficulty-group disabled-style">
+                            <button type="button" class="lobby-diff-btn" data-difficulty="easy">MUDAH</button>
+                            <button type="button" class="lobby-diff-btn active" data-difficulty="medium">SEDANG</button>
+                            <button type="button" class="lobby-diff-btn" data-difficulty="hard">SULIT</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="lobby-card-footer" id="playAiBtn">
+                    <span class="play-label">PLAY</span>
+                    <i class="fa-solid fa-chevron-right play-arrow"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="play-footer-actions">
+            <button id="modeHomeBackBtn" class="text-btn">
+                <i class="fa-solid fa-house"></i> KEMBALI KE BERANDA
+            </button>
+        </div>
+    </div>
+
+    <!-- Game Screen (Permainan Dimulai) -->
+    <div class="game-card screen-container hidden">
+        <div class="game-left-col">
+            <!-- Top Navigation Game Header -->
+            <div class="panel-header game-header">
+                <button id="exitGameBtn" class="icon-btn"><i class="fa-solid fa-arrow-left"></i></button>
+                <h2 id="game-screen-title">TIC TAC TOE</h2>
+                <button id="gameRulesBtn" class="icon-btn icon-btn-rules"><i class="fa-solid fa-circle-exclamation"></i></button>
+            </div>
+
+            <div class="game-player-bar">
+                <!-- Player X Wrapper -->
+                <div class="player-wrapper">
+                    <div class="player-status-card active" id="p-x-card">
+                        <div class="player-avatar av-x">
+                            <i class="fa-solid fa-xmark"></i>
+                        </div>
+                        <div class="player-meta">
+                            <span class="meta-name" id="label-x">Pemain 1</span>
+                            <span class="meta-symbol">(X)</span>
+                            <div id="player-x-lives" class="meta-hearts hidden">❤️❤️❤️</div>
+                        </div>
+                    </div>
+                    <!-- Skills Inventory -->
+                    <div class="inventory-box hidden" id="p-x-inventory-box">
+                        <div class="inventory-header">
+                            <span>INVENTORY <span id="p-x-inv-count">(0/5)</span></span>
+                        </div>
+                        <div class="skills-grid" id="p-x-skills">
+                            <!-- Skill icons render here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="vs-divider">
+                    <span>VS</span>
+                </div>
+
+                <!-- Player O Wrapper -->
+                <div class="player-wrapper">
+                    <div class="player-status-card" id="p-o-card">
+                        <div class="player-avatar av-o">
+                            <i class="fa-solid fa-o"></i>
+                        </div>
+                        <div class="player-meta">
+                            <span class="meta-name" id="label-o">Pemain 2</span>
+                            <span class="meta-symbol">(O)</span>
+                            <div id="player-o-lives" class="meta-hearts hidden">❤️❤️❤️</div>
+                        </div>
+                    </div>
+                    <!-- Skills Inventory -->
+                    <div class="inventory-box hidden" id="p-o-inventory-box">
+                        <div class="inventory-header">
+                            <span>INVENTORY <span id="p-o-inv-count">(0/5)</span></span>
+                        </div>
+                        <div class="skills-grid" id="p-o-skills">
+                            <!-- Skill icons render here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Turn Indicator -->
+            <div class="turn-indicator-box">
+                Giliran: <strong id="turn">Pemain 1 (X)</strong>
+            </div>
+
+            <!-- Skill Activation Banner -->
+            <div id="skill-activation-banner" class="skill-banner-container hidden">
+                <div class="skill-banner-content">
+                    <i class="fa-solid fa-wand-magic-sparkles magic-icon"></i>
+                    <span id="skill-banner-text">SKILL AKTIF: Bomb - Klik target</span>
+                    <button type="button" id="cancelSkillBtn" class="skill-cancel-btn">BATAL</button>
+                </div>
+            </div>
+
+            <!-- Reset Button -->
+            <div class="game-actions-row">
+                <button id="resetGameBtn" class="reset-btn">
+                    <i class="fa-solid fa-rotate-right"></i> RESET PERMAINAN
+                </button>
+            </div>
+
+            <!-- Skill Legend List (Only visible in Ultimate Mode) -->
+            <div id="skills-legend-box" class="skills-legend-box hidden">
+                <div class="legend-header">
+                    <span><i class="fa-solid fa-wand-magic-sparkles"></i> DAFTAR SKILL ULTIMATE</span>
+                </div>
+                <div class="legend-list">
+                    <div class="legend-item" title="Bomb">
+                        <span class="l-badge rarity-common">💣</span>
+                        <div class="l-info">
+                            <span class="l-name">Bomb</span>
+                            <span class="l-desc">Hapus 1 simbol lawan atau brick tembok.</span>
+                        </div>
+                    </div>
+                    <div class="legend-item" title="Freeze">
+                        <span class="l-badge rarity-common">❄️</span>
+                        <div class="l-info">
+                            <span class="l-name">Freeze</span>
+                            <span class="l-desc">Bekukan lawan untuk giliran berikutnya.</span>
+                        </div>
+                    </div>
+                    <div class="legend-item" title="Lock Cell">
+                        <span class="l-badge rarity-common">🔒</span>
+                        <div class="l-info">
+                            <span class="l-name">Lock Cell</span>
+                            <span class="l-desc">Kunci 1 kotak kosong selama 2 giliran.</span>
+                        </div>
+                    </div>
+                    <div class="legend-item" title="Double Move">
+                        <span class="l-badge rarity-rare">⚡</span>
+                        <div class="l-info">
+                            <span class="l-name">Double Move</span>
+                            <span class="l-desc">Gunakan 2 langkah di giliran ini.</span>
+                        </div>
+                    </div>
+                    <div class="legend-item" title="Wall">
+                        <span class="l-badge rarity-rare">🧱</span>
+                        <div class="l-info">
+                            <span class="l-name">Wall</span>
+                            <span class="l-desc">Pasang tembok di kotak kosong (2 giliran).</span>
+                        </div>
+                    </div>
+                    <div class="legend-item" title="Swap">
+                        <span class="l-badge rarity-rare">🔄</span>
+                        <div class="l-info">
+                            <span class="l-name">Swap</span>
+                            <span class="l-desc">Tukar posisi 2 simbol apa saja di papan.</span>
+                        </div>
+                    </div>
+                    <div class="legend-item" title="Shield">
+                        <span class="l-badge rarity-epic">🛡️</span>
+                        <div class="l-info">
+                            <span class="l-name">Shield</span>
+                            <span class="l-desc">Kebal dari skill lawan selama 1 giliran.</span>
+                        </div>
+                    </div>
+                    <div class="legend-item" title="Replace">
+                        <span class="l-badge rarity-epic">🔁</span>
+                        <div class="l-info">
+                            <span class="l-name">Replace</span>
+                            <span class="l-desc">Ubah 1 simbol lawan menjadi simbol milikmu.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- In-game footer tips -->
+            <div class="tips-box-bar">
+                <i class="fa-solid fa-lightbulb icon-tips"></i>
+                <span id="tip-text">Dapatkan tiga simbol sejajar untuk menang!</span>
+            </div>
+        </div>
+
+        <div class="game-right-col">
+            <!-- Canvas Game Board -->
+            <div class="canvas-wrapper">
+                <canvas id="game" width="400" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Symbol Picker Modal (before game starts) -->
+    <div id="symbol-picker-modal" class="modal-overlay hidden">
+        <div class="modal-content symbol-picker-content">
+            <!-- Step 0: Board Size (only for Ultimate mode) -->
+            <div id="board-size-step" class="symbol-step hidden">
+                <div class="modal-icon-header">
+                    <i class="fa-solid fa-table-cells-large cyan-text"></i>
+                </div>
+                <h2>UKURAN PAPAN</h2>
+                <p style="margin-bottom: 20px;">Pilih ukuran papan untuk Ultimate Mode:</p>
+                <div class="board-size-row">
+                    <button class="size-choice-btn" id="size5Btn" data-size="5">
+                        <span class="size-big">5 × 5</span>
+                        <span class="size-desc">5 Sejajar Untuk Menang</span>
+                    </button>
+                    <button class="size-choice-btn" id="size7Btn" data-size="7">
+                        <span class="size-big">7 × 7</span>
+                        <span class="size-desc">7 Sejajar Untuk Menang</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Step 1: Player 1 picks -->
+            <div id="symbol-step-1" class="symbol-step">
+                <div class="modal-icon-header">
+                    <i class="fa-solid fa-1 cyan-text"></i>
+                </div>
+                <h2>PILIH SIMBOL</h2>
+                <p id="symbol-pick-label">Pemain 1, pilih simbolmu:</p>
+                <div class="symbol-choice-row">
+                    <button class="symbol-choice-btn" id="pickXBtn" data-symbol="X">
+                        <span class="symbol-big cyan-text">✖</span>
+                        <span class="symbol-name">X</span>
+                    </button>
+                    <button class="symbol-choice-btn" id="pickOBtn" data-symbol="O">
+                        <span class="symbol-big pink-text">⭕</span>
+                        <span class="symbol-name">O</span>
+                    </button>
+                </div>
+                <p class="symbol-note"><i class="fa-solid fa-circle-info"></i> Giliran pertama selalu dimulai dari pemain yang memilih <strong>X</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loader Overlay -->
+    <div id="loader-overlay" class="hidden">
+        <div class="loader-box">
+            <div class="loader-ring"></div>
+            <p class="loader-text" id="loader-text">Memuat Game...</p>
+        </div>
+    </div>
+
+    <!-- Popup Result Modal -->
+    <div id="result-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-icon-header" id="modal-icon">
+                <i class="fa-solid fa-trophy text-gold"></i>
+            </div>
+            <h2 id="modal-title">RONDE SELESAI</h2>
+            <div id="modal-message">Detail hasil pertandingan akan muncul di sini.</div>
+            <div class="modal-buttons">
+                <button id="modalActionBtn" class="primary-btn">Lanjut</button>
+                <button id="viewBoardBtn" class="secondary-btn">Lihat Papan</button>
+                <button id="modalHomeBtn" class="secondary-btn">Main Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Persona 3 Reload All-Out Attack Victory Screen -->
+    <div id="aoa-victory-screen" class="hidden">
+        <!-- Colored Shard Background Elements -->
+        <div class="aoa-bg-shards">
+            <div class="aoa-shard aoa-shard-black"></div>
+            <div class="aoa-shard aoa-shard-blue"></div>
+            <div class="aoa-shard aoa-shard-cyan"></div>
+        </div>
+        
+        <!-- Flash Effect -->
+        <div class="aoa-flash"></div>
+        
+        <!-- Big Winner Symbol Graphic (X or O) -->
+        <div class="aoa-winner-graphic-container">
+            <div class="aoa-winner-graphic" id="aoa-winner-symbol">X</div>
+        </div>
+        
+        <!-- Diagonal Text Banner -->
+        <div class="aoa-diagonal-banner">
+            <span class="aoa-banner-text">ALL-OUT ATTACK FINISH</span>
+        </div>
+        
+        <!-- Victory Content -->
+        <div class="aoa-content">
+            <h1 class="aoa-winner-title" id="aoa-winner-title">PLAYER 1</h1>
+            <p class="aoa-victory-quote" id="aoa-victory-quote">"I've got this."</p>
+            <p class="aoa-subtext" id="aoa-subtext">Ronde ini berhasil dituntaskan dengan sempurna!</p>
+            
+            <div class="aoa-buttons">
+                <button id="aoaActionBtn" class="primary-btn aoa-btn"><span>LANJUT</span></button>
+                <button id="aoaViewBoardBtn" class="secondary-btn aoa-btn"><span>LIHAT PAPAN</span></button>
+                <button id="aoaHomeBtn" class="secondary-btn aoa-btn"><span>MAIN MENU</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Persona 3 Reload Style Draw Screen -->
+    <div id="aoa-draw-screen" class="hidden">
+        <!-- Colored Shard Background Elements -->
+        <div class="aoa-bg-shards">
+            <div class="aoa-shard aoa-shard-black"></div>
+            <div class="aoa-shard aoa-shard-blue"></div>
+            <div class="aoa-shard aoa-shard-cyan"></div>
+        </div>
+        
+        <!-- Flash Effect -->
+        <div class="aoa-flash"></div>
+        
+        <!-- Big Draw Icon Graphic (Handshake) -->
+        <div class="aoa-winner-graphic-container">
+            <div class="aoa-winner-graphic" id="aoa-draw-graphic">🤝</div>
+        </div>
+        
+        <!-- Diagonal Text Banner -->
+        <div class="aoa-diagonal-banner">
+            <span class="aoa-banner-text">DRAW GAME</span>
+        </div>
+        
+        <!-- Draw Content -->
+        <div class="aoa-content">
+            <h1 class="aoa-winner-title" id="aoa-draw-title">ROUND DRAW</h1>
+            <p class="aoa-victory-quote" id="aoa-draw-quote">"Two forces, perfectly matched."</p>
+            <p class="aoa-subtext">Pertandingan berakhir imbang. Atur kembali strategimu!</p>
+            
+            <div class="aoa-buttons">
+                <button id="drawActionBtn" class="primary-btn aoa-btn"><span>LANJUT</span></button>
+                <button id="drawViewBoardBtn" class="secondary-btn aoa-btn"><span>LIHAT PAPAN</span></button>
+                <button id="drawHomeBtn" class="secondary-btn aoa-btn"><span>MAIN MENU</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Return Button when Viewing Board -->
+    <button id="closeViewBoardBtn" class="primary-btn hidden" style="position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) skewX(-10deg); z-index: 10001; box-shadow: var(--solid-shadow);">
+        <span style="transform: skewX(10deg); display: inline-block;">KEMBALI KE HASIL</span>
+    </button>
+
+    <!-- P3R Style Battle Transition Overlay -->
+    <div id="p3r-transition" class="p3r-transition hidden">
+        <div class="p3r-trans-shard p3r-trans-shard-1"></div>
+        <div class="p3r-trans-shard p3r-trans-shard-2"></div>
+        <div class="p3r-trans-shard p3r-trans-shard-3"></div>
+        <div class="p3r-trans-flash"></div>
+        <div class="p3r-trans-text-container">
+            <span class="p3r-trans-text" id="p3r-trans-label">ENGAGE!</span>
+        </div>
+    </div>
+
+    <!-- Shuffle Time / Persona Get Modal -->
+    <div id="shuffle-modal" class="modal-overlay hidden">
+        <div class="shuffle-bg-flash"></div>
+        <div class="shuffle-container">
+            <h1 class="shuffle-title">SHUFFLE TIME</h1>
+            <p class="shuffle-subtitle">KLIK KARTU UNTUK MENGAMBIL SKILL</p>
+            
+            <div class="holographic-card" id="holo-card">
+                <div class="card-draw-flash"></div>
+                <div class="holo-content">
+                    <div class="card-inner-design">
+                        <div class="card-p3r-strip"></div>
+                        <div class="card-rarity-tag" id="holo-card-rarity">COMMON</div>
+                        <div class="card-icon-circle" id="holo-card-icon">💣</div>
+                        <h2 class="card-skill-name" id="holo-card-name">BOMB</h2>
+                        <p class="card-skill-desc" id="holo-card-desc">Hapus 1 simbol lawan atau brick tembok</p>
+                    </div>
+                </div>
+                <div class="holo-glow"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scoreboard Modal -->
+    <div id="scoreboard-modal" class="modal-overlay hidden">
+        <div class="modal-content scoreboard-modal-content">
+            <div class="modal-icon-header">
+                <i class="fa-solid fa-trophy yellow-text"></i>
+            </div>
+            <h2>PAPAN SKOR</h2>
+            <p class="scoreboard-sub">Statistik rekor permainan Anda</p>
+            
+            <div class="scoreboard-scrollable">
+                <!-- Classic Stats -->
+                <div class="scoreboard-section">
+                    <h3><i class="fa-solid fa-star cyan-text"></i> Mode Klasik</h3>
+                    <div class="stat-item">
+                        <span class="stat-label">Pemain vs Pemain (PvP)</span>
+                        <div class="stat-values" id="stat-classic-pvp">
+                            <span class="v-win">X: 0</span> • <span class="v-lose">O: 0</span> • <span class="v-draw">Seri: 0</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Pemain vs Komputer (PvAI)</span>
+                        <div class="stat-values" id="stat-classic-ai">
+                            <span class="v-win">Player: 0</span> • <span class="v-lose">AI: 0</span> • <span class="v-draw">Seri: 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Battle Stats -->
+                <div class="scoreboard-section">
+                    <h3><i class="fa-solid fa-heart-pulse pink-text"></i> Mode Battle</h3>
+                    <div class="stat-item">
+                        <span class="stat-label">Pemain vs Pemain (PvP)</span>
+                        <div class="stat-values" id="stat-battle-pvp">
+                            <span class="v-win">Pemain 1: 0</span> • <span class="v-lose">Pemain 2: 0</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Pemain vs Komputer (PvAI)</span>
+                        <div class="stat-values" id="stat-battle-ai">
+                            <span class="v-win">Player: 0</span> • <span class="v-lose">AI: 0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-buttons">
+                <button id="resetScoreBtn" class="danger-btn"><i class="fa-solid fa-trash-can"></i> Reset Skor</button>
+                <button id="closeScoreboardBtn" class="primary-btn">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <script type="module" src="js/script.js"></script>
+
+</body>
+</html>
