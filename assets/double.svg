@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="lightningGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffd32a" />
+      <stop offset="100%" stop-color="#ff9f43" />
+    </linearGradient>
+  </defs>
+  <!-- Outer lightning neon shadow -->
+  <path d="M 52 8 L 22 52 L 48 52 L 36 92 L 78 42 L 50 42 Z" fill="rgba(255, 211, 42, 0.15)" filter="blur(4px)" />
+  <!-- Main double bolt lightning -->
+  <path d="M 58 6 L 32 46 L 56 46 L 42 86 L 78 38 L 52 38 Z" fill="url(#lightningGrad)" stroke="#ffffff" stroke-width="2" stroke-linejoin="miter" />
+  <!-- Second smaller offset bolt for "Double" effect -->
+  <path d="M 42 20 L 22 52 L 40 52 L 30 80 L 52 46 L 36 46 Z" fill="rgba(0, 210, 255, 0.8)" opacity="0.6" stroke="#00d2ff" stroke-width="1" />
+</svg>

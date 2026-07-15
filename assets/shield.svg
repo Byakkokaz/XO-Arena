@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0b2845" />
+      <stop offset="100%" stop-color="#040914" />
+    </linearGradient>
+  </defs>
+  <!-- Outer shield shape -->
+  <path d="M 50 14 C 64 14 82 22 82 22 C 82 22 82 58 72 74 C 62 90 50 94 50 94 C 50 94 38 90 28 74 C 18 58 18 22 18 22 C 18 22 36 14 50 14 Z" fill="url(#shieldGrad)" stroke="#00d2ff" stroke-width="3" stroke-linejoin="round" />
+  <!-- Inner shield line -->
+  <path d="M 50 24 C 60 24 72 30 72 30 C 72 30 72 54 65 66 C 58 78 50 82 50 82 C 50 82 42 78 35 66 C 28 54 28 30 28 30 C 28 30 40 24 50 24 Z" fill="none" stroke="#00d2ff" stroke-width="1.5" opacity="0.6" />
+  <!-- Diagonal Slash accent -->
+  <path d="M 40 38 L 60 62 M 35 50 L 50 68" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
+</svg>

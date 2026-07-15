@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="lockGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#221b05" />
+      <stop offset="100%" stop-color="#040914" />
+    </radialGradient>
+  </defs>
+  <!-- Shackle -->
+  <path d="M 32 48 L 32 32 A 18 18 0 0 1 68 32 L 68 48" fill="none" stroke="#ffd32a" stroke-width="4" stroke-linecap="round" />
+  <!-- Lock Body -->
+  <rect x="22" y="44" width="56" height="42" rx="4" fill="url(#lockGrad)" stroke="#ffd32a" stroke-width="3" />
+  <!-- Keyhole -->
+  <circle cx="50" cy="60" r="5" fill="#040914" stroke="#ffffff" stroke-width="2" />
+  <polygon points="48,64 52,64 54,74 46,74" fill="#ffffff" />
+</svg>

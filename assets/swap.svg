@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Circular swap arrows -->
+  <!-- Top Right Arrow -->
+  <path d="M 28 36 A 28 28 0 0 1 76 44" fill="none" stroke="#00d2ff" stroke-width="4.5" stroke-linecap="round" />
+  <polygon points="76,34 84,46 70,48" fill="#00d2ff" stroke="#ffffff" stroke-width="1.5" />
+
+  <!-- Bottom Left Arrow -->
+  <path d="M 72 64 A 28 28 0 0 1 24 56" fill="none" stroke="#ff2a5f" stroke-width="4.5" stroke-linecap="round" />
+  <polygon points="24,66 16,54 30,52" fill="#ff2a5f" stroke="#ffffff" stroke-width="1.5" />
+  
+  <!-- Swap Center Node -->
+  <circle cx="50" cy="50" r="6" fill="#040914" stroke="#ffffff" stroke-width="2" />
+</svg>

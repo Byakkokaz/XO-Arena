@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Stylized Shield/Wall Barrier -->
+  <defs>
+    <linearGradient id="wallGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c203c" />
+      <stop offset="100%" stop-color="#050d1a" />
+    </linearGradient>
+  </defs>
+  <!-- Wall base block outer shape -->
+  <path d="M 15 35 L 50 15 L 85 35 L 85 75 L 50 90 L 15 75 Z" fill="url(#wallGrad)" stroke="#ff2a5f" stroke-width="3" stroke-linejoin="round" />
+  <!-- Brick horizontal lines -->
+  <path d="M 15 48 L 50 32 L 85 48 M 15 62 L 50 48 L 85 62" fill="none" stroke="#ff2a5f" stroke-width="2" />
+  <!-- Brick vertical lines -->
+  <path d="M 32 40 L 32 55 M 68 40 L 68 55 M 50 15 L 50 32 M 50 48 L 50 90 M 32 69 L 32 82 M 68 69 L 68 82" fill="none" stroke="#ff2a5f" stroke-width="2" />
+</svg>
