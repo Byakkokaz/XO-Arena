@@ -673,15 +673,15 @@ export function _launchGame(SIZE) {
     
     const invBoxX = document.getElementById("p-x-inventory-box");
     const invBoxO = document.getElementById("p-o-inventory-box");
-    const legendBox = document.getElementById("skills-legend-box");
+    const skillsBtn = document.getElementById("gameSkillsBtn");
     if (gameMode === "ultimate") {
         invBoxX.classList.remove("hidden");
         invBoxO.classList.remove("hidden");
-        if (legendBox) legendBox.classList.remove("hidden");
+        if (skillsBtn) skillsBtn.classList.remove("hidden");
     } else {
         invBoxX.classList.add("hidden");
         invBoxO.classList.add("hidden");
-        if (legendBox) legendBox.classList.add("hidden");
+        if (skillsBtn) skillsBtn.classList.add("hidden");
     }
     
     const banner = document.getElementById("skill-activation-banner");
