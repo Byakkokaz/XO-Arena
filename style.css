@@ -1385,11 +1385,11 @@ canvas {
 /* ── TABLET & DESKTOP (LANDSCAPE) VIEWPORTS (WIDTH >= 850PX) ───────── */
 @media (min-width: 850px) {
     .screen-container {
-        max-width: 880px;
-        min-height: 600px;
-        padding: 40px;
+        max-width: 1020px; /* Increased from 880px to accommodate larger layout */
+        min-height: 650px; /* Increased from 600px */
+        padding: 45px;
         flex-direction: row;
-        gap: 40px;
+        gap: 50px;
         align-items: center;
         justify-content: center;
     }
@@ -1406,8 +1406,11 @@ canvas {
         align-items: center !important;
         text-align: center !important;
     }
+    #home-screen .logo-title {
+        font-size: 3.8rem !important; /* Slightly larger logo on desktop */
+    }
     #home-screen .home-actions {
-        width: 320px !important;
+        width: 340px !important;
         margin-bottom: 0 !important;
     }
     #home-screen .footer-credit {
@@ -1432,6 +1435,9 @@ canvas {
         max-height: none !important;
         overflow-y: visible !important;
     }
+    #rules-screen .rule-section p {
+        font-size: 0.9rem !important; /* More readable descriptions on desktop */
+    }
 
     /* Play Screen Grid/Row Layout */
     #play-screen {
@@ -1447,8 +1453,11 @@ canvas {
         margin-top: 15px !important;
     }
     #play-screen .lobby-card {
-        width: 350px !important;
-        min-height: 380px !important;
+        width: 360px !important;
+        min-height: 400px !important;
+    }
+    #play-screen .lobby-card-desc {
+        font-size: 0.9rem !important;
     }
     #play-screen .play-footer-actions {
         margin-top: 15px !important;
@@ -1460,13 +1469,13 @@ canvas {
         flex-direction: row !important;
         align-items: center !important;
         justify-content: space-between !important;
-        gap: 45px !important;
+        gap: 50px !important;
         width: 100% !important;
-        max-width: 900px !important;
+        max-width: 1200px !important; /* Expanded maximum width for the game screen */
     }
     .game-card .game-left-col {
-        flex: 1.15 !important;
-        gap: 15px !important;
+        flex: 0 0 450px !important; /* Prevent left column elements from shrinking on desktop */
+        gap: 20px !important;
     }
     .game-card .game-right-col {
         flex: 1 !important;
@@ -1476,9 +1485,93 @@ canvas {
     }
     .game-card .canvas-wrapper {
         margin-bottom: 0 !important;
+        max-width: 580px !important; /* Allow the wrapper to expand for larger board sizes */
+        width: 100% !important;
+        padding: 12px !important;
     }
     .game-card .tips-box-bar {
         margin-top: auto !important;
+        font-size: 0.88rem !important;
+    }
+
+    /* Player Status Cards Optimization */
+    .player-avatar {
+        width: 46px !important;
+        height: 46px !important;
+        font-size: 1.4rem !important;
+    }
+    .meta-name {
+        font-size: 1.05rem !important;
+        max-width: 140px !important;
+    }
+    .meta-symbol {
+        font-size: 0.85rem !important;
+    }
+    .meta-hearts {
+        font-size: 0.9rem !important;
+    }
+    .turn-indicator-box {
+        font-size: 1.2rem !important;
+    }
+
+    /* Skill legends list in Ultimate Mode */
+    .l-badge {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 1.1rem !important;
+    }
+    .l-name {
+        font-size: 0.85rem !important;
+    }
+    .l-desc {
+        font-size: 0.72rem !important;
+    }
+
+    /* Modals & Picker Optimization */
+    .modal-content {
+        max-width: 480px !important; /* Larger modals on desktop for clarity */
+        padding: 40px !important;
+    }
+    .scoreboard-modal-content {
+        max-width: 540px !important;
+    }
+    .symbol-picker-content {
+        max-width: 460px !important;
+    }
+    .symbol-choice-btn {
+        padding: 30px 24px !important;
+    }
+    .symbol-big {
+        font-size: 3.5rem !important;
+    }
+    .symbol-name {
+        font-size: 1.1rem !important;
+    }
+    .size-choice-btn {
+        padding: 30px 20px !important;
+    }
+    .size-big {
+        font-size: 2.2rem !important;
+    }
+    .size-desc {
+        font-size: 0.85rem !important;
+    }
+
+    /* Scoreboard sections */
+    .scoreboard-section h3 {
+        font-size: 1.15rem !important;
+    }
+    .stat-label {
+        font-size: 0.9rem !important;
+    }
+    .stat-values {
+        font-size: 1rem !important;
+    }
+    
+    /* General action buttons */
+    .reset-btn {
+        padding: 14px 28px !important;
+        font-size: 1.05rem !important;
     }
 }
 
@@ -1790,6 +1883,18 @@ canvas {
     background: rgba(0, 210, 255, 0.15) !important;
     border-color: var(--neon-cyan) !important;
     box-shadow: var(--solid-shadow-hover);
+}
+
+.icon-btn-skills {
+    color: var(--yellow-gold) !important;
+    border-color: rgba(255, 211, 42, 0.25) !important;
+    background: rgba(255, 211, 42, 0.06) !important;
+}
+
+.icon-btn-skills:hover {
+    background: rgba(255, 211, 42, 0.15) !important;
+    border-color: var(--yellow-gold) !important;
+    box-shadow: var(--solid-shadow-hover) !important;
 }
 
 /* ── SYMBOL PICKER MODAL ───────────────────────────────────────────────── */
@@ -2893,9 +2998,11 @@ canvas {
 }
 
 /* ── RESPONSIVE CANVAS SCALING TWEAKS ────────────────────────────────── */
-.canvas-wrapper {
-    width: 100% !important;
-    max-width: 420px !important;
-    margin-left: auto;
-    margin-right: auto;
+@media (max-width: 849px) {
+    .canvas-wrapper {
+        width: 100% !important;
+        max-width: 420px !important;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
