@@ -1,3 +1,4 @@
+import { getAIMove } from "./ai.js";
 import {
     board,
     boardSize,
@@ -294,7 +295,10 @@ function showAoaVictoryScreen(winner) {
             if (opponentType === "pvp") scoreboard.battle.pvp.winsP1++;
             else scoreboard.battle.ai.winsPlayer++;
         } else {
-            if (opponentType === "pvp") scoreboard.classic.pvp.winsX++;
+            if (opponentType === "pvp") {
+                if (winner === "X") scoreboard.classic.pvp.winsX++;
+                else scoreboard.classic.pvp.winsO++;
+            }
             else scoreboard.classic.ai.winsPlayer++;
         }
     } else {
@@ -390,12 +394,18 @@ function showToast(message) {
 
 // --- Skills Inventory Updates ---
 function renderInventoriesUI() {
-    const p1Count = document.getElementById("p-x-inv-count");
-    const p1SkillsGrid = document.getElementById("p-x-skills");
-    if (p1Count && p1SkillsGrid) {
-        p1Count.textContent = `(${player1Inventory.length}/5)`;
-        p1SkillsGrid.innerHTML = "";
-        player1Inventory.forEach((skillId, index) => {
+    const xPlayerNum = (player1Symbol === "X") ? 1 : 2;
+    const oPlayerNum = (player1Symbol === "O") ? 1 : 2;
+
+    const xInventory = (xPlayerNum === 1) ? player1Inventory : player2Inventory;
+    const oInventory = (oPlayerNum === 1) ? player1Inventory : player2Inventory;
+
+    const pXCount = document.getElementById("p-x-inv-count");
+    const pXSkillsGrid = document.getElementById("p-x-skills");
+    if (pXCount && pXSkillsGrid) {
+        pXCount.textContent = `(${xInventory.length}/5)`;
+        pXSkillsGrid.innerHTML = "";
+        xInventory.forEach((skillId, index) => {
             const skill = SKILLS[skillId];
             const btn = document.createElement("button");
             btn.type = "button";
@@ -403,28 +413,28 @@ function renderInventoriesUI() {
             btn.innerHTML = skill.icon;
             btn.title = `${skill.name}: ${skill.desc}`;
             
-            const isP1Turn = (currentPlayer === player1Symbol);
-            const isHuman = (opponentType !== "ai" || player1Symbol === "X" ? isP1Turn : false);
-            if (isP1Turn && !aiIsThinking && !gameOver && isHuman) {
+            const isPlayerTurn = (currentPlayer === (xPlayerNum === 1 ? player1Symbol : player2Symbol));
+            const isHuman = (xPlayerNum === 1) ? isPlayerTurn : (opponentType !== "ai" && isPlayerTurn);
+            if (isPlayerTurn && !aiIsThinking && !gameOver && isHuman) {
                 btn.addEventListener("click", (e) => {
                     e.stopPropagation();
-                    activateSkill(skillId, index, 1);
+                    activateSkill(skillId, index, xPlayerNum);
                 });
             } else {
                 btn.disabled = true;
                 btn.style.opacity = "0.5";
                 btn.style.cursor = "not-allowed";
             }
-            p1SkillsGrid.appendChild(btn);
+            pXSkillsGrid.appendChild(btn);
         });
     }
 
-    const p2Count = document.getElementById("p-o-inv-count");
-    const p2SkillsGrid = document.getElementById("p-o-skills");
-    if (p2Count && p2SkillsGrid) {
-        p2Count.textContent = `(${player2Inventory.length}/5)`;
-        p2SkillsGrid.innerHTML = "";
-        player2Inventory.forEach((skillId, index) => {
+    const pOCount = document.getElementById("p-o-inv-count");
+    const pOSkillsGrid = document.getElementById("p-o-skills");
+    if (pOCount && pOSkillsGrid) {
+        pOCount.textContent = `(${oInventory.length}/5)`;
+        pOSkillsGrid.innerHTML = "";
+        oInventory.forEach((skillId, index) => {
             const skill = SKILLS[skillId];
             const btn = document.createElement("button");
             btn.type = "button";
@@ -432,19 +442,19 @@ function renderInventoriesUI() {
             btn.innerHTML = skill.icon;
             btn.title = `${skill.name}: ${skill.desc}`;
             
-            const isP2Turn = (currentPlayer === player2Symbol);
-            const isHuman = (opponentType !== "ai" && isP2Turn);
-            if (isP2Turn && !aiIsThinking && !gameOver && isHuman) {
+            const isPlayerTurn = (currentPlayer === (oPlayerNum === 1 ? player1Symbol : player2Symbol));
+            const isHuman = (oPlayerNum === 1) ? isPlayerTurn : (opponentType !== "ai" && isPlayerTurn);
+            if (isPlayerTurn && !aiIsThinking && !gameOver && isHuman) {
                 btn.addEventListener("click", (e) => {
                     e.stopPropagation();
-                    activateSkill(skillId, index, 2);
+                    activateSkill(skillId, index, oPlayerNum);
                 });
             } else {
                 btn.disabled = true;
                 btn.style.opacity = "0.5";
                 btn.style.cursor = "not-allowed";
             }
-            p2SkillsGrid.appendChild(btn);
+            pOSkillsGrid.appendChild(btn);
         });
     }
 }
