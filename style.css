@@ -1520,6 +1520,10 @@ canvas {
         height: 32px !important;
         font-size: 1.1rem !important;
     }
+    .l-badge img {
+        width: 22px !important;
+        height: 22px !important;
+    }
     .l-name {
         font-size: 0.85rem !important;
     }
@@ -2105,6 +2109,14 @@ canvas {
     border-radius: 2px;
     font-size: 0.95rem;
     flex-shrink: 0;
+}
+
+.l-badge img {
+    width: 18px;
+    height: 18px;
+    display: block;
+    object-fit: contain;
+    margin: auto;
 }
 
 .l-info {
