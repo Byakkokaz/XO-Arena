@@ -204,9 +204,12 @@
         <div class="game-left-col">
             <!-- Top Navigation Game Header -->
             <div class="panel-header game-header">
-                <button id="exitGameBtn" class="icon-btn"><i class="fa-solid fa-arrow-left"></i></button>
+                <button id="exitGameBtn" class="icon-btn" title="Keluar Game"><i class="fa-solid fa-arrow-left"></i></button>
                 <h2 id="game-screen-title">TIC TAC TOE</h2>
-                <button id="gameRulesBtn" class="icon-btn icon-btn-rules"><i class="fa-solid fa-circle-exclamation"></i></button>
+                <div class="game-header-actions" style="display: flex; gap: 8px;">
+                    <button id="gameSkillsBtn" class="icon-btn icon-btn-skills hidden" title="Daftar Skill"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+                    <button id="gameRulesBtn" class="icon-btn icon-btn-rules" title="Peraturan"><i class="fa-solid fa-circle-exclamation"></i></button>
+                </div>
             </div>
 
             <div class="game-player-bar">
@@ -280,71 +283,6 @@
                 <button id="resetGameBtn" class="reset-btn">
                     <i class="fa-solid fa-rotate-right"></i> RESET PERMAINAN
                 </button>
-            </div>
-
-            <!-- Skill Legend List (Only visible in Ultimate Mode) -->
-            <div id="skills-legend-box" class="skills-legend-box hidden">
-                <div class="legend-header">
-                    <span><i class="fa-solid fa-wand-magic-sparkles"></i> DAFTAR SKILL ULTIMATE</span>
-                </div>
-                <div class="legend-list">
-                    <div class="legend-item" title="Bomb">
-                        <span class="l-badge rarity-common">💣</span>
-                        <div class="l-info">
-                            <span class="l-name">Bomb</span>
-                            <span class="l-desc">Hapus 1 simbol lawan atau brick tembok.</span>
-                        </div>
-                    </div>
-                    <div class="legend-item" title="Freeze">
-                        <span class="l-badge rarity-common">❄️</span>
-                        <div class="l-info">
-                            <span class="l-name">Freeze</span>
-                            <span class="l-desc">Bekukan lawan untuk giliran berikutnya.</span>
-                        </div>
-                    </div>
-                    <div class="legend-item" title="Lock Cell">
-                        <span class="l-badge rarity-common">🔒</span>
-                        <div class="l-info">
-                            <span class="l-name">Lock Cell</span>
-                            <span class="l-desc">Kunci 1 kotak kosong selama 2 giliran.</span>
-                        </div>
-                    </div>
-                    <div class="legend-item" title="Double Move">
-                        <span class="l-badge rarity-rare">⚡</span>
-                        <div class="l-info">
-                            <span class="l-name">Double Move</span>
-                            <span class="l-desc">Gunakan 2 langkah di giliran ini.</span>
-                        </div>
-                    </div>
-                    <div class="legend-item" title="Wall">
-                        <span class="l-badge rarity-rare">🧱</span>
-                        <div class="l-info">
-                            <span class="l-name">Wall</span>
-                            <span class="l-desc">Pasang tembok di kotak kosong (2 giliran).</span>
-                        </div>
-                    </div>
-                    <div class="legend-item" title="Swap">
-                        <span class="l-badge rarity-rare">🔄</span>
-                        <div class="l-info">
-                            <span class="l-name">Swap</span>
-                            <span class="l-desc">Tukar posisi 2 simbol apa saja di papan.</span>
-                        </div>
-                    </div>
-                    <div class="legend-item" title="Shield">
-                        <span class="l-badge rarity-epic">🛡️</span>
-                        <div class="l-info">
-                            <span class="l-name">Shield</span>
-                            <span class="l-desc">Kebal dari skill lawan selama 1 giliran.</span>
-                        </div>
-                    </div>
-                    <div class="legend-item" title="Replace">
-                        <span class="l-badge rarity-epic">🔁</span>
-                        <div class="l-info">
-                            <span class="l-name">Replace</span>
-                            <span class="l-desc">Ubah 1 simbol lawan menjadi simbol milikmu.</span>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <!-- In-game footer tips -->
@@ -589,6 +527,82 @@
             <div class="modal-buttons">
                 <button id="resetScoreBtn" class="danger-btn"><i class="fa-solid fa-trash-can"></i> Reset Skor</button>
                 <button id="closeScoreboardBtn" class="primary-btn">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skills Legend Modal -->
+    <div id="skills-legend-modal" class="modal-overlay hidden">
+        <div class="modal-content scoreboard-modal-content">
+            <div class="modal-icon-header">
+                <i class="fa-solid fa-wand-magic-sparkles yellow-text"></i>
+            </div>
+            <h2>DAFTAR SKILL ULTIMATE</h2>
+            <p class="scoreboard-sub">Gunakan kombinasi skill untuk membalikkan keadaan</p>
+            
+            <div class="scoreboard-scrollable">
+                <div class="legend-list" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-height: none; overflow-y: visible;">
+                    <div class="legend-item" title="Bomb">
+                        <span class="l-badge rarity-common">💣</span>
+                        <div class="l-info">
+                            <span class="l-name">Bomb</span>
+                            <span class="l-desc">Hapus 1 simbol lawan atau brick tembok.</span>
+                        </div>
+                    </div>
+                    <div class="legend-item" title="Freeze">
+                        <span class="l-badge rarity-common">❄️</span>
+                        <div class="l-info">
+                            <span class="l-name">Freeze</span>
+                            <span class="l-desc">Bekukan lawan untuk giliran berikutnya.</span>
+                        </div>
+                    </div>
+                    <div class="legend-item" title="Lock Cell">
+                        <span class="l-badge rarity-common">🔒</span>
+                        <div class="l-info">
+                            <span class="l-name">Lock Cell</span>
+                            <span class="l-desc">Kunci 1 kotak kosong selama 2 giliran.</span>
+                        </div>
+                    </div>
+                    <div class="legend-item" title="Double Move">
+                        <span class="l-badge rarity-rare">⚡</span>
+                        <div class="l-info">
+                            <span class="l-name">Double Move</span>
+                            <span class="l-desc">Gunakan 2 langkah di giliran ini.</span>
+                        </div>
+                    </div>
+                    <div class="legend-item" title="Wall">
+                        <span class="l-badge rarity-rare">🧱</span>
+                        <div class="l-info">
+                            <span class="l-name">Wall</span>
+                            <span class="l-desc">Pasang tembok di kotak kosong (2 giliran).</span>
+                        </div>
+                    </div>
+                    <div class="legend-item" title="Swap">
+                        <span class="l-badge rarity-rare">🔄</span>
+                        <div class="l-info">
+                            <span class="l-name">Swap</span>
+                            <span class="l-desc">Tukar posisi 2 simbol apa saja di papan.</span>
+                        </div>
+                    </div>
+                    <div class="legend-item" title="Shield">
+                        <span class="l-badge rarity-epic">🛡️</span>
+                        <div class="l-info">
+                            <span class="l-name">Shield</span>
+                            <span class="l-desc">Kebal dari skill lawan selama 1 giliran.</span>
+                        </div>
+                    </div>
+                    <div class="legend-item" title="Replace">
+                        <span class="l-badge rarity-epic">🔁</span>
+                        <div class="l-info">
+                            <span class="l-name">Replace</span>
+                            <span class="l-desc">Ubah 1 simbol lawan menjadi simbol milikmu.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-buttons">
+                <button id="closeSkillsLegendBtn" class="primary-btn">Tutup</button>
             </div>
         </div>
     </div>
