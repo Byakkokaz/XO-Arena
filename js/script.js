@@ -83,7 +83,8 @@ import {
     checkAndTriggerAiFirstTurn,
     _launchGame,
     loadScoreboard,
-    saveScoreboard
+    saveScoreboard,
+    addRandomSkillToActivePlayer
 } from "./game-logic.js";
 
 import {
@@ -598,7 +599,10 @@ function startGame() {
     else if (gameMode === "battle") transLabel = "BATTLE START";
     else transLabel = "GAME START";
     
-    playP3RTransition(transLabel, () => _launchGame(SIZE));
+    playP3RTransition(transLabel, () => {
+        _launchGame(SIZE);
+        resizeCanvas();
+    });
 }
 
 // --- Lobby Nav Events ---
@@ -740,7 +744,32 @@ pickOBtn.addEventListener("click", () => {
 });
 
 exitGameBtn.addEventListener("click", () => {
-    resultModal.classList.add("hidden");
+    setGameOver(true);
+    setAiIsThinking(false);
+    setActiveSkill(null);
+    setSwapFirstCell(null);
+    setDoubleMovesLeft(0);
+    
+    // Close all game-related overlays and screens
+    const overlays = [
+        "result-modal",
+        "aoa-victory-screen",
+        "aoa-draw-screen",
+        "shuffle-modal",
+        "symbol-picker-modal",
+        "skills-legend-modal"
+    ];
+    overlays.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add("hidden");
+    });
+    
+    const banner = document.getElementById("skill-activation-banner");
+    if (banner) banner.classList.add("hidden");
+    
+    const closeViewBtn = document.getElementById("closeViewBoardBtn");
+    if (closeViewBtn) closeViewBtn.classList.add("hidden");
+
     showScreen(homeScreen);
 });
 
@@ -776,6 +805,7 @@ resetGameBtn.addEventListener("click", () => {
         addRandomSkillToActivePlayer();
     }
     renderInventoriesUI();
+    resizeCanvas();
     checkAndTriggerAiFirstTurn();
 });
 
@@ -799,6 +829,26 @@ scoreboardBtn.addEventListener("click", () => {
 closeScoreboardBtn.addEventListener("click", () => {
     scoreboardModal.classList.add("hidden");
 });
+
+// --- Skills Legend Modal Interactions ---
+const gameSkillsBtn = document.getElementById("gameSkillsBtn");
+const skillsLegendModal = document.getElementById("skills-legend-modal");
+const closeSkillsLegendBtn = document.getElementById("closeSkillsLegendBtn");
+
+if (gameSkillsBtn && skillsLegendModal && closeSkillsLegendBtn) {
+    gameSkillsBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        skillsLegendModal.classList.remove("hidden");
+    });
+    closeSkillsLegendBtn.addEventListener("click", () => {
+        skillsLegendModal.classList.add("hidden");
+    });
+    skillsLegendModal.addEventListener("click", (e) => {
+        if (e.target === skillsLegendModal) {
+            skillsLegendModal.classList.add("hidden");
+        }
+    });
+}
 
 resetScoreBtn.addEventListener("click", () => {
     if (confirm("Apakah Anda yakin ingin menghapus semua rekor skor?")) {
@@ -845,6 +895,7 @@ modalActionBtn.addEventListener("click", () => {
             addRandomSkillToActivePlayer();
         }
         renderInventoriesUI();
+        resizeCanvas();
         checkAndTriggerAiFirstTurn();
     });
 });
