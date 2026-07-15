@@ -411,7 +411,7 @@ function renderInventoriesUI() {
             const btn = document.createElement("button");
             btn.type = "button";
             btn.className = `skill-item rarity-${skill.rarity}`;
-            btn.innerHTML = skill.icon;
+            btn.innerHTML = `<img src="${skill.icon}" alt="${skill.name}" style="width:20px; height:20px; display:block; margin:auto;">`;
             btn.title = `${skill.name}: ${skill.desc}`;
             
             const isPlayerTurn = (currentPlayer === (xPlayerNum === 1 ? player1Symbol : player2Symbol));
@@ -440,7 +440,7 @@ function renderInventoriesUI() {
             const btn = document.createElement("button");
             btn.type = "button";
             btn.className = `skill-item rarity-${skill.rarity}`;
-            btn.innerHTML = skill.icon;
+            btn.innerHTML = `<img src="${skill.icon}" alt="${skill.name}" style="width:20px; height:20px; display:block; margin:auto;">`;
             btn.title = `${skill.name}: ${skill.desc}`;
             
             const isPlayerTurn = (currentPlayer === (oPlayerNum === 1 ? player1Symbol : player2Symbol));
@@ -492,7 +492,7 @@ function showShuffleTimeModal(skillId) {
 
     const skill = SKILLS[skillId];
     rarityText.textContent = skill.rarity.toUpperCase();
-    iconDiv.textContent = skill.icon;
+    iconDiv.innerHTML = `<img src="${skill.icon}" alt="${skill.name}" style="width:52px; height:52px; display:block; margin:auto;">`;
     nameH2.textContent = skill.name;
     descP.textContent = skill.desc;
 
