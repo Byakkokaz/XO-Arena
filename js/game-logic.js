@@ -607,11 +607,11 @@ export function checkAndTriggerAiFirstTurn() {
                 if (gameOver) { aiIsThinking = false; return; }
                 const move = getAIMove(board, boardSize, player1Symbol, player2Symbol, aiDifficulty, player2Lives, gameMode);
                 if (move) {
-                    board[move.row][move.col] = "X";
+                    board[move.row][move.col] = player2Symbol;
                     playSound(clickSound);
                     drawBoard();
                     
-                    currentPlayer = "O";
+                    currentPlayer = player1Symbol;
                     updateTurnDisplay();
                     renderInventories();
                     
@@ -659,17 +659,10 @@ export function _launchGame(SIZE) {
 
     const avX = document.querySelector("#p-x-card .player-avatar");
     const avO = document.querySelector("#p-o-card .player-avatar");
-    if (player1Symbol === "X") {
-        avX.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-        avX.className = "player-avatar av-x";
-        avO.innerHTML = '<i class="fa-solid fa-o"></i>';
-        avO.className = "player-avatar av-o";
-    } else {
-        avX.innerHTML = '<i class="fa-solid fa-o"></i>';
-        avX.className = "player-avatar av-o";
-        avO.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-        avO.className = "player-avatar av-x";
-    }
+    avX.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+    avX.className = "player-avatar av-x";
+    avO.innerHTML = '<i class="fa-solid fa-o"></i>';
+    avO.className = "player-avatar av-o";
     
     const screenTitle = document.getElementById("game-screen-title");
     if (screenTitle) {
@@ -717,7 +710,33 @@ export function loadScoreboard() {
     const saved = localStorage.getItem("xo_arena_scoreboard");
     if (saved) {
         try {
-            scoreboard = JSON.parse(saved);
+            const parsed = JSON.parse(saved);
+            if (parsed && typeof parsed === "object") {
+                // Safely merge classic scoreboard
+                if (parsed.classic && typeof parsed.classic === "object") {
+                    if (parsed.classic.pvp && typeof parsed.classic.pvp === "object") {
+                        scoreboard.classic.pvp.winsX = parsed.classic.pvp.winsX ?? 0;
+                        scoreboard.classic.pvp.winsO = parsed.classic.pvp.winsO ?? 0;
+                        scoreboard.classic.pvp.draws = parsed.classic.pvp.draws ?? 0;
+                    }
+                    if (parsed.classic.ai && typeof parsed.classic.ai === "object") {
+                        scoreboard.classic.ai.winsPlayer = parsed.classic.ai.winsPlayer ?? 0;
+                        scoreboard.classic.ai.winsAI = parsed.classic.ai.winsAI ?? 0;
+                        scoreboard.classic.ai.draws = parsed.classic.ai.draws ?? 0;
+                    }
+                }
+                // Safely merge battle scoreboard
+                if (parsed.battle && typeof parsed.battle === "object") {
+                    if (parsed.battle.pvp && typeof parsed.battle.pvp === "object") {
+                        scoreboard.battle.pvp.winsP1 = parsed.battle.pvp.winsP1 ?? 0;
+                        scoreboard.battle.pvp.winsP2 = parsed.battle.pvp.winsP2 ?? 0;
+                    }
+                    if (parsed.battle.ai && typeof parsed.battle.ai === "object") {
+                        scoreboard.battle.ai.winsPlayer = parsed.battle.ai.winsPlayer ?? 0;
+                        scoreboard.battle.ai.winsAI = parsed.battle.ai.winsAI ?? 0;
+                    }
+                }
+            }
         } catch (e) {
             console.error("Scoreboard parsing error", e);
         }
