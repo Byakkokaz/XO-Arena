@@ -54,14 +54,14 @@ export let scoreboard = {
 
 // --- Constant Registries ---
 export const SKILLS = {
-    bomb: { name: "Bomb", icon: "💣", rarity: "common", desc: "Hapus 1 simbol lawan atau tembok" },
-    freeze: { name: "Freeze", icon: "❄️", rarity: "common", desc: "Bekukan lawan 1 giliran" },
-    lock: { name: "Lock Cell", icon: "🔒", rarity: "common", desc: "Kunci 1 kotak (2 giliran)" },
-    double: { name: "Double Move", icon: "⚡", rarity: "rare", desc: "Jalan 2 kali giliran ini" },
-    wall: { name: "Wall", icon: "🧱", rarity: "rare", desc: "Tembok di kotak kosong (hilang dalam 2 giliran)" },
-    swap: { name: "Swap", icon: "🔄", rarity: "rare", desc: "Tukar posisi 2 simbol" },
-    shield: { name: "Shield", icon: "🛡️", rarity: "epic", desc: "Kebal skill lawan 1 giliran" },
-    replace: { name: "Replace", icon: "🔁", rarity: "epic", desc: "Ubah 1 simbol lawan jadi milikmu" }
+    bomb: { name: "Bomb", icon: "assets/bomb.svg", rarity: "common", desc: "Hapus 1 simbol lawan atau tembok" },
+    freeze: { name: "Freeze", icon: "assets/freeze.svg", rarity: "common", desc: "Bekukan lawan 1 giliran" },
+    lock: { name: "Lock Cell", icon: "assets/lock.svg", rarity: "common", desc: "Kunci 1 kotak (2 giliran)" },
+    double: { name: "Double Move", icon: "assets/double.svg", rarity: "rare", desc: "Jalan 2 kali giliran ini" },
+    wall: { name: "Wall", icon: "assets/wall.svg", rarity: "rare", desc: "Tembok di kotak kosong (hilang dalam 2 giliran)" },
+    swap: { name: "Swap", icon: "assets/swap.svg", rarity: "rare", desc: "Tukar posisi 2 simbol" },
+    shield: { name: "Shield", icon: "assets/shield.svg", rarity: "epic", desc: "Kebal skill lawan 1 giliran" },
+    replace: { name: "Replace", icon: "assets/replace.svg", rarity: "epic", desc: "Ubah 1 simbol lawan jadi milikmu" }
 };
 
 export const TIPS = [
