@@ -32,7 +32,23 @@ export function resizeCanvas() {
     
     const padding = 20;
     let displaySize = wrapper.clientWidth - padding;
-    if (displaySize > 400) displaySize = 400;
+    
+    // Determine dynamic max cap based on viewport and board size
+    let maxCap = 400;
+    const isDesktop = window.innerWidth >= 850;
+    if (isDesktop) {
+        if (boardSize === 5) {
+            maxCap = 500;
+        } else if (boardSize === 7) {
+            maxCap = 560;
+        } else {
+            maxCap = 440; // classic/battle
+        }
+    } else {
+        maxCap = 400; // mobile cap
+    }
+    
+    if (displaySize > maxCap) displaySize = maxCap;
     if (displaySize < 250) displaySize = 250;
     
     canvas.style.width = displaySize + "px";
